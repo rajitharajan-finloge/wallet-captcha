@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Captcha Page</title>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+  <button
+    class="g-recaptcha"
+    data-sitekey="6Leq6RcrAAAAAHGzoYZc8fR6Bv-K8cE-f9SPYofX"
+    data-callback="onCaptchaSuccess"
+    data-size="invisible">
+    Verify
+  </button>
+
+  <script>
+    function onCaptchaSuccess(token) {
+      // Send token back to extension
+      window.opener.postMessage({ type: "captcha-token", token: token }, "*");
+      window.close(); // close the popup window
+    }
+
+    window.onload = function () {
+      document.querySelector(".g-recaptcha").click(); // trigger on load
+    };
+  </script>
+</body>
+</html>
