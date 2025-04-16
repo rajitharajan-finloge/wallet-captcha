@@ -29,16 +29,16 @@
 
 
 
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Turnstile CAPTCHA</title>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   </head>
-  <body>
+  <body> -->
     <!--<div id="captcha-container"></div>-->
-    <div class="cf-turnstile"
+   <!-- <div class="cf-turnstile"
        data-sitekey="your-site-key"
        data-theme="light"
        data-callback="onCaptchaSuccess"
@@ -60,4 +60,47 @@
       };
     </script>
   </body>
+</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Turnstile CAPTCHA</title>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadCallback" async defer></script>
+  </head>
+  <body>
+    <div id="captcha-container"></div>
+
+    <button id="captcha-button">Verify</button>
+
+    <script>
+      let widgetId = null;
+
+      function onloadCallback() {
+        widgetId = turnstile.render("#captcha-container", {
+          sitekey: "0x4AAAAAABL7DK50ez_VsJZM", // ✅ Your site key
+          theme: "light",
+          execution: "execute", // Required to allow programmatic execution
+          callback: function (token) {
+            console.log("Token:", token);
+            parent.postMessage({ captchaToken: token }, "*"); // Post token to parent
+          },
+          "error-callback": function () {
+            console.error("CAPTCHA failed.");
+          },
+          "expired-callback": function () {
+            console.warn("CAPTCHA expired.");
+          }
+        });
+      }
+
+      document.getElementById("captcha-button").addEventListener("click", function () {
+        if (widgetId !== null) {
+          turnstile.execute(widgetId);
+        }
+      });
+    </script>
+  </body>
 </html>
+
