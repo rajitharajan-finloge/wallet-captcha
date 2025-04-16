@@ -42,7 +42,7 @@
     <script>
       window.onload = function () {
         turnstile.render("#captcha-container", {
-          sitekey: "YOUR_SITE_KEY",
+          sitekey: "0x4AAAAAABL7DK50ez_VsJZM",
           callback: function (token) {
             console.log("Token:", token);
             parent.postMessage({ captchaToken: token }, "*");
