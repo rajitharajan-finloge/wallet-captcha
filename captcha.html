@@ -37,7 +37,16 @@
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   </head>
   <body>
-    <div id="captcha-container"></div>
+    <--<div id="captcha-container"></div>-->
+    <div class="cf-turnstile"
+       data-sitekey="your-site-key"
+       data-theme="light"
+       data-callback="onCaptchaSuccess"
+       data-execution="execute">
+    </div>
+
+<button onclick="turnstile.execute()">Verify</button>
+
 
     <script>
       window.onload = function () {
