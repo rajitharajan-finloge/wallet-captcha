@@ -32,19 +32,23 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
     <title>Turnstile CAPTCHA</title>
-    <script>
-      function onTurnstileSuccess(token) {
-        window.parent.postMessage({ captchaToken: token }, "*");
-      }
-    </script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   </head>
   <body>
-    <div class="cf-turnstile"
-      data-sitekey="0x4AAAAAABL7DK50ez_VsJZM"
-      data-callback="onTurnstileSuccess"
-      data-theme="light">
-    </div>
+    <div id="captcha-container"></div>
+
+    <script>
+      window.onload = function () {
+        turnstile.render("#captcha-container", {
+          sitekey: "YOUR_SITE_KEY",
+          callback: function (token) {
+            console.log("Token:", token);
+            parent.postMessage({ captchaToken: token }, "*");
+          },
+        });
+      };
+    </script>
   </body>
 </html>
