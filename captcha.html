@@ -31,22 +31,20 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <title>Captcha</title>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-</head>
-<body>
-  <div class="cf-turnstile"
-    data-sitekey="0x4AAAAAAAYWztRmzdb6VDhU"
-    data-callback="onCaptchaSuccess"
-    data-theme="light">
-  </div>
-
-  <script>
-    function onCaptchaSuccess(token) {
-      // Send token to the parent (extension)
-      window.parent.postMessage({ captchaToken: token }, "*");
-    }
-  </script>
-</body>
+  <head>
+    <title>Turnstile CAPTCHA</title>
+    <script>
+      function onTurnstileSuccess(token) {
+        window.parent.postMessage({ captchaToken: token }, "*");
+      }
+    </script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  </head>
+  <body>
+    <div class="cf-turnstile"
+      data-sitekey="0x4AAAAAAAYWztRmzdb6VDhU"
+      data-callback="onTurnstileSuccess"
+      data-theme="light">
+    </div>
+  </body>
 </html>
