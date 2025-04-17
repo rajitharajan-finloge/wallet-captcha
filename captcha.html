@@ -107,66 +107,69 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Turnstile CAPTCHA</title>
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadCallback" async defer></script>
-    
-    <!-- ✅ Add these styles -->
-    <style>
-      #captcha-container {
-        width: 100%;
-        max-width: 300px;
-        height: 65px; /* Ideal height for the widget */
-        overflow: hidden; /* Prevent scrollbar */
-        margin-bottom: 10px;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <title>Turnstile CAPTCHA</title>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadCallback" async defer></script>
 
-      iframe {
-        border: none !important;
-      }
+  <!-- ✅ Add styles to control overflow and prevent scrollbars -->
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* Prevent any scrollbars */
+      height: 100%;
+    }
 
-      body {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 50px;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="captcha-container"></div>
+    #captcha-container {
+      width: 100%;
+      max-width: 300px;
+      height: 65px;
+      overflow: hidden;
+      margin: 50px auto 10px;
+    }
 
-    <button id="captcha-button">Verify</button>
+    iframe {
+      border: none !important;
+      overflow: hidden !important;
+    }
 
-    <script>
-      let widgetId = null;
+    button {
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="captcha-container"></div>
+  <button id="captcha-button">Verify</button>
 
-      function onloadCallback() {
-        widgetId = turnstile.render("#captcha-container", {
-          sitekey: "0x4AAAAAABL7DK50ez_VsJZM", // Your site key
-          theme: "light",
-          execution: "execute",
-          callback: function (token) {
-            console.log("Token:", token);
-            parent.postMessage({ captchaToken: token }, "*");
-          },
-          "error-callback": function () {
-            console.error("CAPTCHA failed.");
-          },
-          "expired-callback": function () {
-            console.warn("CAPTCHA expired.");
-          }
-        });
-      }
+  <script>
+    let widgetId = null;
 
-      document.getElementById("captcha-button").addEventListener("click", function () {
-        if (widgetId !== null) {
-          turnstile.execute(widgetId);
+    function onloadCallback() {
+      widgetId = turnstile.render("#captcha-container", {
+        sitekey: "0x4AAAAAABL7DK50ez_VsJZM",
+        theme: "light",
+        execution: "execute",
+        callback: function (token) {
+          console.log("Token:", token);
+          parent.postMessage({ captchaToken: token }, "*");
+        },
+        "error-callback": function () {
+          console.error("CAPTCHA failed.");
+        },
+        "expired-callback": function () {
+          console.warn("CAPTCHA expired.");
         }
       });
-    </script>
-  </body>
+    }
+
+    document.getElementById("captcha-button").addEventListener("click", function () {
+      if (widgetId !== null) {
+        turnstile.execute(widgetId);
+      }
+    });
+  </script>
+</body>
 </html>
-
-
